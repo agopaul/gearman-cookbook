@@ -19,7 +19,7 @@
 
 packages = value_for_platform(
   %w{ debian } => {
-    :default => %w{libboost-program-options-dev libevent-1.4-2 libtokyocabinet8 }
+    :default => %w{build-essential libboost-program-options-dev libevent-1.4-2 libtokyocabinet8 }
   },
   %w{ centos redhat } => {
     :default => []
@@ -55,9 +55,7 @@ end
 
 user node['gearman']['server']['user'] do
   comment 'Gearman Job Server'
-  home node['gearman']['server']['data_dir']
   shell '/bin/false'
-  supports :manage_home => true
 end
 
 group node['gearman']['server']['group'] do
@@ -77,20 +75,17 @@ logrotate_app 'gearmand' do
   create "600 #{node['gearman']['server']['user']} #{node['gearman']['server']['group']}"
 end
 
-args = "--port=#{node['gearman']['server']['port']} --log-file #{node['gearman']['server']['log_dir']}/gearmand.log --verbose=#{node['gearman']['server']['log_level']}"
-
 case node['platform']
 when 'debian'
-  template '/etc/init/gearmand.conf' do source 'gearmand.upstart.erb'
+  template '/etc/init.d/gearman-job-server' do source 'gearmand.upstart.erb'
     owner 'root'
     group 'root'
     mode '0644'
-    variables :args => args
-    notifies :restart, 'service[gearmand]'
+    notifies :restart, 'service[gearman-job-server]'
   end
 
-  service 'gearmand' do
-    provider Chef::Provider::Service::Upstart
+  service 'gearman-job-server' do
+    provider Chef::Provider::Service::Init::Debian
     supports :restart => true, :status => true
     action [:enable, :start]
   end
