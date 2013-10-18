@@ -19,7 +19,7 @@
 
 packages = value_for_platform(
   %w{ debian ubuntu } => {
-    :default => %w{ libboost-program-options1.40.0 libevent-1.4-2 libtokyocabinet8 }
+    :default => %w{libboost-program-options-dev libevent-1.4-2 libtokyocabinet8 }
   },
   %w{ centos redhat } => {
     :default => []
@@ -27,8 +27,8 @@ packages = value_for_platform(
 )
 
 file_to_install = value_for_platform(
-  %w{ debian ubuntu } => { :default => 'gearmand-0.29_x86_64.deb' },
-  %w{ centos redhat } => { :default => 'gearmand-0.24_x86_64.rpm' }
+  %w{ debian ubuntu } => { :default => 'gearmand_1.0.2-1_amd64.deb' },
+  %w{ centos redhat } => { :default => 'todo.rpm' }
 )
 
 install_command = value_for_platform(
@@ -37,7 +37,7 @@ install_command = value_for_platform(
 )
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{file_to_install}" do
-  source "https://github.com/cramerdev/packages/raw/master/#{file_to_install}"
+  source "https://github.com/agopaul/deb-packages/blob/master/#{file_to_install}"
   action :create_if_missing
 end
 
