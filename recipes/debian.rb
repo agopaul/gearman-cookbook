@@ -18,7 +18,7 @@
 #
 
 packages = value_for_platform(
-  %w{ debian ubuntu } => {
+  %w{ debian } => {
     :default => %w{libboost-program-options-dev libevent-1.4-2 libtokyocabinet8 }
   },
   %w{ centos redhat } => {
@@ -27,12 +27,12 @@ packages = value_for_platform(
 )
 
 file_to_install = value_for_platform(
-  %w{ debian ubuntu } => { :default => 'gearmand_1.0.2-1_amd64.deb' },
+  %w{ debian } => { :default => 'gearmand_1.0.2-1_amd64.deb' },
   %w{ centos redhat } => { :default => 'todo.rpm' }
 )
 
 install_command = value_for_platform(
-  %w{ debian ubuntu } => { :default => 'dpkg -i' },
+  %w{ debian } => { :default => 'dpkg -i' },
   %w{ centos redhat } => { :default => 'rpm -Uvh' }
 )
 
@@ -80,7 +80,7 @@ end
 args = "--port=#{node['gearman']['server']['port']} --log-file #{node['gearman']['server']['log_dir']}/gearmand.log --verbose=#{node['gearman']['server']['log_level']}"
 
 case node['platform']
-when 'debian', 'ubuntu'
+when 'debian'
   template '/etc/init/gearmand.conf' do source 'gearmand.upstart.erb'
     owner 'root'
     group 'root'

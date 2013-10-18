@@ -17,5 +17,10 @@
 # limitations under the License.
 #
 
-package 'libgearman-dev'
-gem_package 'gearman-ruby'
+case node["platform"]
+when "ubuntu"
+	package "gearman-job-server"
+	package 'libgearman-dev'
+when "debian"
+	include_recipe "gearman::debian"
+end
