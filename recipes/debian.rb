@@ -80,7 +80,7 @@ when 'debian'
   template '/etc/init.d/gearman-job-server' do source 'gearmand.upstart.erb'
     owner 'root'
     group 'root'
-    mode '0644'
+    mode '0744'
     notifies :restart, 'service[gearman-job-server]'
   end
 
