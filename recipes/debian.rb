@@ -37,7 +37,7 @@ install_command = value_for_platform(
 )
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{file_to_install}" do
-  source "https://github.com/agopaul/deb-packages/blob/master/#{file_to_install}"
+  source "https://github.com/agopaul/deb-packages/raw/master/#{file_to_install}"
   action :create_if_missing
 end
 
